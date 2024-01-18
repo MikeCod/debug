@@ -61,6 +61,7 @@ $ gcc example.c # No debug (optimized)
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.
 
 ## How to use `DEBUG`
+
 You may specify debug level using associated number (1-6, or `*`, which actually represents 6) and have debug output with a level higher.
 ```sh
 $ DEBUG=4 ./a.out # Show everything higher or equal to LOG_INFO/4
@@ -93,12 +94,14 @@ $ DEBUG="1;*wonder*;4:marvelous" ./a.out
 ```
 
 ### No context
+
 To print a string no matter the debug loglevel:
 ```cpp
 printf_debug("Hello world !");
 ```
 
 ## Spacing
+
 By default, debug output have spacing.
 You may disable those with the macro `DEBUG_SPACING_FILE`, `DEBUG_SPACING_FUNCTION` and `DEBUG_SPACING_LINE`.
 Set these to 0 if you want to spacing.
@@ -119,4 +122,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE)
