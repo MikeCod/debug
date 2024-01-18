@@ -42,8 +42,8 @@ void marvelous() {
 }
 
 int main() {
-	printf_debug("Test "); // Show in any debug context
-	printf_level(LOG_ERROR, "Test 2"); // Show in any context equal or below ERROR (2)
+	printf_debug("Hello world !"); // Show in any debug context
+	printf_level(LOG_ERROR, "Oh damn"); // Show in any context equal or below ERROR (2)
 
 	wonderful();
 	marvelous();
