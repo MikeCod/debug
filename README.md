@@ -33,19 +33,17 @@ __[Example :](example.c)__
 #include <debug/debug.h>
 
 
-void wonderful()
-{
-	printf_level(LOG_DEBUG, "Something happened");
+void wonderful() {
+	printf_level(LOG_DEBUG, "Something happened"); // Show in any context equal or below DEBUG (5)
 }
 
-void marvelous()
-{
-	printf_level(LOG_WARNING, "Something %s happened", "wrong");
+void marvelous() {
+	printf_level(LOG_WARNING, "Something %s happened", "wrong"); // Show in any context equal or below WARNING (3)
 }
 
 int main() {
-	printf_debug("Test ");
-	printf_level(LOG_FATAL, "Test 2");
+	printf_debug("Test "); // Show in any debug context
+	printf_level(LOG_ERROR, "Test 2"); // Show in any context equal or below ERROR (2)
 
 	wonderful();
 	marvelous();
