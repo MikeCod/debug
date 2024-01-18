@@ -100,7 +100,7 @@ To print a string no matter the debug loglevel:
 printf_debug("Hello world !");
 ```
 
-## Spacing
+## Spacing
 
 By default, debug output have spacing.
 You may disable those with the macro `DEBUG_SPACING_FILE`, `DEBUG_SPACING_FUNCTION` and `DEBUG_SPACING_LINE`.
