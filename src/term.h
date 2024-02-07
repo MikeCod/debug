@@ -15,7 +15,7 @@
  * \param x How to update (string)
  */
 #define T_OUT(x) \
-	"\033[" x "m"__TERM_H__
+	"\033[" x "m"
 
 #define T_RESET "\033[0m"
 #define T_DEFAULT "0"
