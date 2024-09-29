@@ -1,6 +1,8 @@
 # Debug API
 
-## 
+## Overview
+
+API made to simplify debugging.
 
 ## Installation
 

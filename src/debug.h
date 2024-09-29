@@ -159,9 +159,11 @@ char *str_replace(char *orig, const char *rep, const char *with)
 int make_regex(char *regex, const char *buf)
 {
 	if (buf[1] == ':')
-		return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:%s", buf[0], &buf[2]);
+		return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:%s", buf[0] == '*' ? C(LOG_TRACE) : buf[0], &buf[2]);
 	if (buf[0] >= C(LOG_FATAL) && buf[0] <= C(LOG_TRACE))
 		return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:(.*)", buf[0]);
+	if (buf[0] <= '9' && buf[0] != '*')
+		fprintf(stderr, "DEBUG: '%c' isn't recognised as a debugging level (max is " __STRINGIFY(LOG_TRACE) " = " STRINGIFY(LOG_TRACE) ")\n\n", buf[0]);
 	return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-" STRINGIFY(LOG_TRACE) "]\\:%s", buf);
 }
 
