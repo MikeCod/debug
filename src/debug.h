@@ -134,7 +134,7 @@ char *str_replace(char *orig, const char *rep, const char *with)
 		ins = tmp + len_rep;
 	}
 
-	tmp = result = (char*) malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+	tmp = result = (char *)malloc(strlen(orig) + (len_with - len_rep) * count + 1);
 
 	if (!result)
 		return NULL;
@@ -156,15 +156,30 @@ char *str_replace(char *orig, const char *rep, const char *with)
 	return result;
 }
 
+#define BUF_SZ 8000
+
 int make_regex(char *regex, const char *buf)
 {
+	char search[BUF_SZ] = "(.*)";
+	char level = C(LOG_TRACE);
+
+#define GET_LEVEL(c)                                          \
+	if (c == '*' || (c >= C(LOG_FATAL) && c <= C(LOG_TRACE))) \
+		level = c == '*' ? C(LOG_TRACE) : c;
+
 	if (buf[1] == ':')
-		return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:%s", buf[0] == '*' ? C(LOG_TRACE) : buf[0], &buf[2]);
-	if (buf[0] >= C(LOG_FATAL) && buf[0] <= C(LOG_TRACE))
-		return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:(.*)", buf[0]);
-	if (buf[0] <= '9' && buf[0] != '*')
+	{
+		snprintf(search, BUF_SZ, "%s", &buf[2]);
+		GET_LEVEL(buf[0])
+		else fprintf(stderr, "DEBUG: '%c' isn't recognised as a debugging level (max is " __STRINGIFY(LOG_TRACE) " = " STRINGIFY(LOG_TRACE) ")\n\n", buf[0]);
+	}
+	else
+		GET_LEVEL(buf[0])
+	else if (buf[0] >= (C(LOG_TRACE) + 1) && buf[0] <= '9')
 		fprintf(stderr, "DEBUG: '%c' isn't recognised as a debugging level (max is " __STRINGIFY(LOG_TRACE) " = " STRINGIFY(LOG_TRACE) ")\n\n", buf[0]);
-	return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-" STRINGIFY(LOG_TRACE) "]\\:%s", buf);
+	else strncpy(search, &buf[2], BUF_SZ);
+
+	return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:%s", level, search);
 }
 
 static char *debug_var = NULL;
@@ -175,8 +190,13 @@ static regex_t debug_regex;
 		if (debug_var == NULL)                                                      \
 		{                                                                           \
 			debug_var = getenv("DEBUG");                                            \
-			debug_var = str_replace(debug_var, "*:", STRINGIFY(LOG_TRACE) ":");     \
-			debug_var = str_replace(debug_var, "*", "(.*)");                        \
+			if (strcmp(debug_var, "*") == 0)                                        \
+				debug_var[0] = '6';                                                 \
+			else                                                                    \
+			{                                                                       \
+				debug_var = str_replace(debug_var, "*:", STRINGIFY(LOG_TRACE) ":"); \
+				debug_var = str_replace(debug_var, "*", "(.*)");                    \
+			}                                                                       \
 			char strregex[8000] = "^(";                                             \
 			char *p = strregex + 2;                                                 \
 			char *c = strtok(debug_var, ";");                                       \
