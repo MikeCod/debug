@@ -19,7 +19,7 @@
  * @param format
  * @param ... Parameters for format
  */
-#define printf_debug
+#define printf_debug(str)
 
 /**
  * @brief Print within a context
@@ -27,7 +27,7 @@
  * @param format
  * @param ... Parameters for format
  */
-#define printf_level
+#define printf_level(l, fmt, ...)
 
 #define LOG_FATAL 1
 #define LOG_ERROR 2
