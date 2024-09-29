@@ -61,35 +61,35 @@
 	"%-" STRINGIFY(DEBUG_SPACING_FILE) "s" T_RESET " " T_OUT(T_BOLD T_FG_WHITE) "%-" STRINGIFY(DEBUG_SPACING_FUNCTION) "s" T_RESET ":" T_OUT(T_FG_CYAN) "%-" STRINGIFY(DEBUG_SPACING_LINE) "u" T_RESET " "
 
 #define __printf_debug(format, ...) \
-	printf(FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+	fprintf(DEBUG_OUT == 2 ? stderr : stdout, FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 #define printf_debug(format, ...) \
-	printf("        " FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+	fprintf(DEBUG_OUT == 2 ? stderr : stdout, "        " FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 #define __level(level)                                                  \
 	{                                                                   \
 		switch (level)                                                  \
 		{                                                               \
 		case LOG_DEBUG:                                                 \
-			printf(T_OUT(T_BOLD T_FG_WHITE) " %-5s ", "DEBUG");         \
+			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_WHITE) " %-5s ", "DEBUG");         \
 			break;                                                      \
 		case LOG_INFO:                                                  \
-			printf(T_OUT(T_BOLD T_FG_CYAN) " %-5s ", "INFO");           \
+			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_CYAN) " %-5s ", "INFO");           \
 			break;                                                      \
 		case LOG_WARNING:                                               \
-			printf(T_OUT(T_BOLD T_FG_YELLOW) " %-5s ", "WARN");         \
+			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_YELLOW) " %-5s ", "WARN");         \
 			break;                                                      \
 		case LOG_ERROR:                                                 \
-			printf(T_OUT(T_BOLD T_FG_RED) " %-5s ", "ERROR");           \
+			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_RED) " %-5s ", "ERROR");           \
 			break;                                                      \
 		case LOG_FATAL:                                                 \
-			printf(T_OUT(T_REVERSE T_BOLD T_FG_RED) " %-5s ", "FATAL"); \
+			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_REVERSE T_BOLD T_FG_RED) " %-5s ", "FATAL"); \
 			break;                                                      \
 		default:                                                        \
-			printf(T_OUT(T_REVERSE T_FG_WHITE) " %-5s ", "TRACE");      \
+			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_REVERSE T_FG_WHITE) " %-5s ", "TRACE");      \
 			break;                                                      \
 		}                                                               \
-		printf(T_RESET " ");                                            \
+		fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_RESET " ");                                            \
 	}
 
 #ifdef DEBUG_LEVEL

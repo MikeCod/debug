@@ -1,3 +1,4 @@
+#define DEBUG_OUT 2
 #include <debug/debug.h>
 
 
