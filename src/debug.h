@@ -49,6 +49,10 @@
 #define DEBUG_SPACING_LINE 4
 #endif // DEBUG_SPACING_LINE
 
+#ifndef DEBUG_OUT
+#define DEBUG_OUT 2
+#endif
+
 #undef printf_debug
 #undef printf_level
 
