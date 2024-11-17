@@ -2,7 +2,7 @@
 
 ## Overview
 
-API made to simplify debugging.
+API made to simplify debugging for C and C++
 
 ## Installation
 
@@ -21,19 +21,19 @@ make u
 ## Loglevel
 
 | Macro | Value | Purpose |
-|---|---|---|
-| LOG_FATAL | 1 | Cannot continue running |
-| LOG_ERROR | 2 | May continue running, but it'd impact execution |
-| LOG_WARNING | 3 | Unexpected event. The program can continue running, but the issue shall be solved |
-| LOG_INFO | 4 | Notable event |
-| LOG_DEBUG | 5 | Information about execution |
-| LOG_TRACE | 6 | Show buffer content |
+|-|:-:|-|
+| **LOG_FATAL** | 1 | Cannot continue running |
+| **LOG_ERROR** | 2 | May continue running, but it'd impact execution |
+| **LOG_WARNING** | 3 | Unexpected event. The program can continue running, but the issue shall be solved |
+| **LOG_INFO** | 4 | Notable event |
+| **LOG_DEBUG** | 5 | Information about execution |
+| **LOG_TRACE** | 6 | Show buffer content |
 
 
 ## Usage
 
-__[Example :](example.c)__
-```cpp
+__[C Example :](example.c)__
+```c
 #include <debug/debug.h>
 
 
@@ -56,10 +56,43 @@ int main() {
 }
 ```
 
+__[C++ Example :](example.cpp)__
+```cpp
+#include "debug/debug.hpp"
+#include <iostream>
+
+
+void wonderful() {
+	printf_level(LOG_DEBUG, "Something happened"); // Show in any context equal or below DEBUG (5)
+}
+
+void marvelous() {
+	printf_level(LOG_WARNING, "Something %s happened", "wrong"); // Show in any context equal or below WARNING (3)
+}
+
+int main() {
+	printf_debug("Hello world !"); // Show in any debug context
+	printf_level(LOG_ERROR, "Oh damn"); // Show in any context equal or below ERROR (2)
+
+	wonderful();
+	marvelous();
+
+	std::cout << "Done" << std::endl;
+
+	return 0;
+}
+```
+
+
 You can build using :
 ```sh
+# C
 $ gcc example.c -DDEBUG # Enable debug
 $ gcc example.c # No debug (optimized)
+
+# C++
+$ g++ example.cpp -DDEBUG # Enable debug
+$ g++ example.cpp # No debug (optimized)
 ```
 
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.

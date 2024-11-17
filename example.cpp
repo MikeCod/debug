@@ -1,4 +1,5 @@
 #include "debug/debug.hpp"
+#include <iostream>
 
 
 void wonderful() {
@@ -15,6 +16,8 @@ int main() {
 
 	wonderful();
 	marvelous();
+
+	std::cout << "Done" << std::endl;
 
 	return 0;
 }

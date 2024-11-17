@@ -70,29 +70,29 @@
 #define printf_debug(format, ...) \
 	fprintf(DEBUG_OUT == 2 ? stderr : stdout, "        " FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
-#define __level(level)                                                  \
-	{                                                                   \
-		switch (level)                                                  \
-		{                                                               \
-		case LOG_DEBUG:                                                 \
+#define __level(level)                                                                                     \
+	{                                                                                                      \
+		switch (level)                                                                                     \
+		{                                                                                                  \
+		case LOG_DEBUG:                                                                                    \
 			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_WHITE) " %-5s ", "DEBUG");         \
-			break;                                                      \
-		case LOG_INFO:                                                  \
+			break;                                                                                         \
+		case LOG_INFO:                                                                                     \
 			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_CYAN) " %-5s ", "INFO");           \
-			break;                                                      \
-		case LOG_WARNING:                                               \
+			break;                                                                                         \
+		case LOG_WARNING:                                                                                  \
 			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_YELLOW) " %-5s ", "WARN");         \
-			break;                                                      \
-		case LOG_ERROR:                                                 \
+			break;                                                                                         \
+		case LOG_ERROR:                                                                                    \
 			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_BOLD T_FG_RED) " %-5s ", "ERROR");           \
-			break;                                                      \
-		case LOG_FATAL:                                                 \
+			break;                                                                                         \
+		case LOG_FATAL:                                                                                    \
 			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_REVERSE T_BOLD T_FG_RED) " %-5s ", "FATAL"); \
-			break;                                                      \
-		default:                                                        \
+			break;                                                                                         \
+		default:                                                                                           \
 			fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_OUT(T_REVERSE T_FG_WHITE) " %-5s ", "TRACE");      \
-			break;                                                      \
-		}                                                               \
+			break;                                                                                         \
+		}                                                                                                  \
 		fprintf(DEBUG_OUT == 2 ? stderr : stdout, T_RESET " ");                                            \
 	}
 
@@ -186,56 +186,56 @@ int make_regex(char *regex, const char *buf)
 	return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:%s", level, search);
 }
 
-static char *debug_var = NULL;
-static regex_t debug_regex;
+char *debug_var = NULL;
+regex_t debug_regex;
 
-#define printf_level(level, format, ...)                                            \
-	{                                                                               \
-		if (debug_var == NULL)                                                      \
-		{                                                                           \
-			debug_var = getenv("DEBUG");                                            \
-			if (strcmp(debug_var, "*") == 0)                                        \
-				debug_var[0] = '6';                                                 \
-			else                                                                    \
-			{                                                                       \
-				debug_var = str_replace(debug_var, "*:", STRINGIFY(LOG_TRACE) ":"); \
-				debug_var = str_replace(debug_var, "*", "(.*)");                    \
-			}                                                                       \
-			char strregex[8000] = "^(";                                             \
-			char *p = strregex + 2;                                                 \
-			char *c = strtok(debug_var, ";");                                       \
-                                                                                    \
-			p += make_regex(p, debug_var);                                          \
-			for (c = strtok(NULL, ";"); c != NULL; c = strtok(NULL, ";"))           \
-			{                                                                       \
-				*p++ = '|';                                                         \
-				p += make_regex(p, c);                                              \
-			}                                                                       \
-			*p++ = ')';                                                             \
-			*p++ = '$';                                                             \
-			assert(!regcomp(&debug_regex, strregex, REG_EXTENDED));                 \
-		}                                                                           \
-		int ret = regexec(&debug_regex, STRINGIFY(level) ":" __FILE__, 0, NULL, 0); \
-		if (ret != 0)                                                               \
-		{                                                                           \
-			char testft[400];                                                       \
-			sprintf(testft, STRINGIFY(level) ":%s", __func__);                      \
-			ret = regexec(&debug_regex, testft, 0, NULL, 0);                        \
-		}                                                                           \
-		switch (ret)                                                                \
-		{                                                                           \
-		case 0:                                                                     \
-			__level(level);                                                         \
-			__printf_debug(format, ##__VA_ARGS__);                                  \
-			break;                                                                  \
-		case REG_NOMATCH:                                                           \
-			break;                                                                  \
-		default:                                                                    \
-			char msg[800];                                                          \
-			regerror(ret, &debug_regex, msg, sizeof(msg));                          \
-			fprintf(stderr, "Regex match failed: %s\n", msg);                       \
-			exit(1);                                                                \
-		}                                                                           \
+#define printf_level(level, format, ...)                                                \
+	{                                                                                   \
+		debug_var = getenv("DEBUG");                                                    \
+		if (debug_var != NULL && strlen(debug_var) != 0)                                                          \
+		{                                                                               \
+			if (strcmp(debug_var, "*") == 0)                                            \
+				debug_var[0] = '6';                                                     \
+			else                                                                        \
+			{                                                                           \
+				debug_var = str_replace(debug_var, "*:", STRINGIFY(LOG_TRACE) ":");     \
+				debug_var = str_replace(debug_var, "*", "(.*)");                        \
+			}                                                                           \
+			char strregex[8000] = "^(";                                                 \
+			char *p = strregex + 2;                                                     \
+			char *c = strtok(debug_var, ";");                                           \
+                                                                                        \
+			p += make_regex(p, debug_var);                                              \
+			for (c = strtok(NULL, ";"); c != NULL; c = strtok(NULL, ";"))               \
+			{                                                                           \
+				*p++ = '|';                                                             \
+				p += make_regex(p, c);                                                  \
+			}                                                                           \
+			*p++ = ')';                                                                 \
+			*p++ = '$';                                                                 \
+			assert(!regcomp(&debug_regex, strregex, REG_EXTENDED));                     \
+			int ret = regexec(&debug_regex, STRINGIFY(level) ":" __FILE__, 0, NULL, 0); \
+			if (ret != 0)                                                               \
+			{                                                                           \
+				char testft[400];                                                       \
+				sprintf(testft, STRINGIFY(level) ":%s", __func__);                      \
+				ret = regexec(&debug_regex, testft, 0, NULL, 0);                        \
+			}                                                                           \
+			switch (ret)                                                                \
+			{                                                                           \
+			case 0:                                                                     \
+				__level(level);                                                         \
+				__printf_debug(format, ##__VA_ARGS__);                                  \
+				break;                                                                  \
+			case REG_NOMATCH:                                                           \
+				break;                                                                  \
+			default:                                                                    \
+				char msg[800];                                                          \
+				regerror(ret, &debug_regex, msg, sizeof(msg));                          \
+				fprintf(stderr, "Regex match failed: %s\n", msg);                       \
+				exit(1);                                                                \
+			}                                                                           \
+		}                                                                               \
 	}
 
 #endif // DEBUG_LEVEL
