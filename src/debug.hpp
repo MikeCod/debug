@@ -15,17 +15,6 @@ extern "C"
 
 #include <iostream>
 
-// enum
-// 		{
-// 			NONE = 0,
-// 			FATAL,
-// 			ERROR,
-// 			WARNING,
-// 			INFO,
-// 			DEBUG,
-// 			TRACE
-// 		};
-
 namespace debug
 {
 #ifdef DEBUG
@@ -43,9 +32,10 @@ namespace debug
 	class debug_level
 	{
 		std::streambuf *sbuf;
-
 	public:
-		debug_level(std::streambuf *sbuf) : sbuf(sbuf) {}
+		debug_level(std::streambuf *sbuf) : sbuf(sbuf)
+		{
+		}
 		template <typename T>
 		debug_cout operator<<(T &&value)
 		{
@@ -60,17 +50,26 @@ namespace debug
 			return rc;
 		}
 	} cout(std::cout.rdbuf());
-	
+
 	namespace log
 	{
 		debug_cout level(int l)
 		{
-			static int level = l;
+			char *strlevel = std::getenv("DEBUG");
+			if(strlevel == NULL)
+				return debug_cout(NULL);
+			int level = std::atoi(strlevel);
+			if(level < l)
+				return debug_cout(NULL);
+			
 			return debug_cout(std::cout.rdbuf());
 		}
 		debug_cout fatal() { return level(LOG_FATAL); };
 		debug_cout error() { return level(LOG_ERROR); };
 		debug_cout warning() { return level(LOG_WARNING); };
+		debug_cout info() { return level(LOG_INFO); };
+		debug_cout debug() { return level(LOG_DEBUG); };
+		debug_cout trace() { return level(LOG_TRACE); };
 	}
 #else
 	class debug_cout
@@ -94,7 +93,6 @@ namespace debug
 			return *this;
 		}
 	};
-	// debug_cout cout(int l) { return debug_cout(); }
 
 	class debug_level
 	{
@@ -112,6 +110,9 @@ namespace debug
 		debug_cout fatal() { return debug_cout(); };
 		debug_cout error() { return debug_cout(); };
 		debug_cout warning() { return debug_cout(); };
+		debug_cout info() { return debug_cout(); };
+		debug_cout debug() { return debug_cout(); };
+		debug_cout trace() { return debug_cout(); };
 	}
 #endif
 }
