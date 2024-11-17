@@ -4,10 +4,6 @@
  * \date 2024-01-17
 */
 
-#ifndef __TERM_H__
-#define __TERM_H__
-
-
 /* Legacy */
 
 /**
@@ -80,6 +76,3 @@
 #define TE_FG "38;"
 #define TE_BG "48;"
 
-
-
-#endif // __TERM_H__

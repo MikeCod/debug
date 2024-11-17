@@ -5,9 +5,6 @@
  * \date 2024-01-17
  */
 
-#ifndef __DEBUG_H__
-#define __DEBUG_H__
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -242,5 +239,3 @@ regex_t debug_regex;
 #endif // DEBUG_LEVEL
 
 #endif // (defined(DEBUG) || defined(DEBUG_LEVEL))
-
-#endif // __DEBUG_H__

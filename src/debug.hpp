@@ -5,9 +5,6 @@
  * \date 2024-01-17
  */
 
-#ifndef __DEBUG_HPP__
-#define __DEBUG_HPP__
-
 extern "C"
 {
 #include "debug.h"
@@ -116,5 +113,3 @@ namespace debug
 	}
 #endif
 }
-
-#endif // __DEBUG_HPP__
