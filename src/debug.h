@@ -19,7 +19,7 @@
  * @param format
  * @param ... Parameters for format
  */
-#define printf_debug(str)
+#define printf_debug(fmt, ...)
 
 /**
  * @brief Print within a context

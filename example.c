@@ -13,7 +13,7 @@ void marvelous()
 
 int main()
 {
-	printf_debug("Hello world !");		// Show in any debug context
+	printf_debug("Hello %d !", "world");		// Show in any debug context
 	printf_level(LOG_ERROR, "Oh damn"); // Show in any context equal or below ERROR (2)
 
 	wonderful();

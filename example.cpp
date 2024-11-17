@@ -16,9 +16,7 @@ int main() {
 	wonderful();
 	marvelous();
 
-	// std::cout << "Done" << std::endl;
-
-	debug::cout(LOG_ERROR) << "Hello " << 3 << std::endl;
+	debug::level::warning() << "Hello " << 3 << std::endl;
 
 	return 0;
 }
