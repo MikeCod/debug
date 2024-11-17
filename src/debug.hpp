@@ -15,16 +15,17 @@ extern "C"
 
 #include <iostream>
 
-#define LOG_UNDEFINED (-1)
-#define LOG_NONE 0
-#define LOG_FATAL 1
-#define LOG_ERROR 2
-#define LOG_WARNING 3
-#define LOG_INFO 4
-#define LOG_DEBUG 5
-#define LOG_TRACE 6
+// enum
+// 		{
+// 			NONE = 0,
+// 			FATAL,
+// 			ERROR,
+// 			WARNING,
+// 			INFO,
+// 			DEBUG,
+// 			TRACE
+// 		};
 
-#define DEBUG__
 namespace debug
 {
 #ifdef DEBUG
@@ -39,11 +40,6 @@ namespace debug
 			: debug_cout(other.rdbuf()) {}
 		~debug_cout() {}
 	};
-	debug_cout cout(int l)
-	{
-		static int level = l;
-		return debug_cout(std::cout.rdbuf());
-	}
 	class debug_level
 	{
 		std::streambuf *sbuf;
@@ -63,10 +59,18 @@ namespace debug
 			rc << manip;
 			return rc;
 		}
-	};
-	namespace level
+	} cout(std::cout.rdbuf());
+	
+	namespace log
 	{
-		debug_cout warning() { return cout(1); };
+		debug_cout level(int l)
+		{
+			static int level = l;
+			return debug_cout(std::cout.rdbuf());
+		}
+		debug_cout fatal() { return level(LOG_FATAL); };
+		debug_cout error() { return level(LOG_ERROR); };
+		debug_cout warning() { return level(LOG_WARNING); };
 	}
 #else
 	class debug_cout
@@ -90,7 +94,7 @@ namespace debug
 			return *this;
 		}
 	};
-	debug_cout cout(int l) { return debug_cout(); }
+	// debug_cout cout(int l) { return debug_cout(); }
 
 	class debug_level
 	{
@@ -101,13 +105,14 @@ namespace debug
 		{
 			return debug_cout();
 		}
-	};
+	} cout(std::cout.rdbuf());
 
-	namespace level
+	namespace log
 	{
-		debug_cout __warning() { return debug_cout(); };
+		debug_cout fatal() { return debug_cout(); };
+		debug_cout error() { return debug_cout(); };
+		debug_cout warning() { return debug_cout(); };
 	}
-
 #endif
 }
 
