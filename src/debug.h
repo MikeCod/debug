@@ -29,6 +29,7 @@
  */
 #define printf_level(l, fmt, ...)
 
+#define LOG_NONE 0
 #define LOG_FATAL 1
 #define LOG_ERROR 2
 #define LOG_WARNING 3

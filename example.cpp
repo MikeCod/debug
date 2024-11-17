@@ -1,5 +1,4 @@
 #include "debug/debug.hpp"
-#include <iostream>
 
 
 void wonderful() {
@@ -11,13 +10,15 @@ void marvelous() {
 }
 
 int main() {
-	printf_debug("Hello world !"); // Show in any debug context
+	// printf_debug("Hello world !"); // Show in any debug context
 	printf_level(LOG_ERROR, "Oh damn"); // Show in any context equal or below ERROR (2)
 
 	wonderful();
 	marvelous();
 
-	std::cout << "Done" << std::endl;
+	// std::cout << "Done" << std::endl;
+
+	debug::cout(LOG_ERROR) << "Hello " << 3 << std::endl;
 
 	return 0;
 }
