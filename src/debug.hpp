@@ -17,56 +17,104 @@ namespace debug
 #ifdef DEBUG
 	class debug_cout : public std::ostream
 	{
+		bool need_newline = true;
+
 	public:
 		debug_cout(std::streambuf *sbuf)
 			: std::ios(sbuf), std::ostream(sbuf)
 		{
 		}
 		debug_cout(debug_cout &&other)
-			: debug_cout(other.rdbuf()) {}
-		~debug_cout() {}
+			: debug_cout(other.rdbuf())
+		{
+			other.need_newline = false;
+		}
+		~debug_cout()
+		{
+			this->need_newline && (*this) << std::endl;
+		}
 	};
-	class debug_level
+	class debug_log
 	{
 		std::streambuf *sbuf;
+
 	public:
-		debug_level(std::streambuf *sbuf) : sbuf(sbuf)
+		debug_log(std::streambuf *sbuf) : sbuf(sbuf)
+		{
+		}
+		~debug_log()
 		{
 		}
 		template <typename T>
 		debug_cout operator<<(T &&value)
 		{
+			char *strlevel = std::getenv("DEBUG");
+			if (strlevel == NULL)
+				return debug_cout(NULL);
+			if (std::atoi(strlevel) == 0)
+				return debug_cout(NULL);
+
 			debug_cout rc(sbuf);
 			rc << std::forward<T>(value);
 			return rc;
 		}
 		debug_cout operator<<(std::ostream &(*manip)(std::ostream &))
 		{
+			char *strlevel = std::getenv("DEBUG");
+			if (strlevel == NULL)
+				return debug_cout(NULL);
+			if (std::atoi(strlevel) == 0)
+				return debug_cout(NULL);
+
 			debug_cout rc(sbuf);
 			rc << manip;
 			return rc;
 		}
-	} cout(std::cout.rdbuf());
+	} cout(std::cout.rdbuf()), cerr(std::cerr.rdbuf());
 
 	namespace log
 	{
-		debug_cout level(int l)
+		class debug_level
 		{
-			char *strlevel = std::getenv("DEBUG");
-			if(strlevel == NULL)
-				return debug_cout(NULL);
-			int level = std::atoi(strlevel);
-			if(level < l)
-				return debug_cout(NULL);
-			
-			return debug_cout(std::cout.rdbuf());
-		}
-		debug_cout fatal() { return level(LOG_FATAL); };
-		debug_cout error() { return level(LOG_ERROR); };
-		debug_cout warning() { return level(LOG_WARNING); };
-		debug_cout info() { return level(LOG_INFO); };
-		debug_cout debug() { return level(LOG_DEBUG); };
-		debug_cout trace() { return level(LOG_TRACE); };
+			std::streambuf *sbuf;
+			int level = LOG_UNDEFINED;
+
+		public:
+			debug_level(std::streambuf *sbuf, int l) : sbuf(sbuf)
+			{
+				this->level = l;
+			}
+			template <typename T>
+			debug_cout operator<<(T &&value)
+			{
+				char *strlevel = std::getenv("DEBUG");
+				if (strlevel == NULL)
+					return debug_cout(NULL);
+				if (this->level > std::atoi(strlevel))
+					return debug_cout(NULL);
+
+				debug_cout rc(sbuf);
+				rc << std::forward<T>(value);
+				return rc;
+			}
+			debug_cout operator<<(std::ostream &(*manip)(std::ostream &))
+			{
+				char *strlevel = std::getenv("DEBUG");
+				if (strlevel == NULL)
+					return debug_cout(NULL);
+				if (this->level > std::atoi(strlevel))
+					return debug_cout(NULL);
+
+				debug_cout rc(sbuf);
+				rc << manip;
+				return rc;
+			}
+		} fatal(std::cerr.rdbuf(), LOG_FATAL),
+			error(std::cerr.rdbuf(), LOG_ERROR),
+			warning(std::cerr.rdbuf(), LOG_WARNING),
+			info(std::cerr.rdbuf(), LOG_INFO),
+			debug(std::cerr.rdbuf(), LOG_DEBUG),
+			trace(std::cerr.rdbuf(), LOG_TRACE);
 	}
 #else
 	class debug_cout
@@ -91,25 +139,34 @@ namespace debug
 		}
 	};
 
-	class debug_level
+	class debug_log
 	{
 	public:
-		debug_level(std::streambuf *sbuf) {}
+		debug_log(std::streambuf *sbuf) {}
 		template <typename T>
 		debug_cout operator<<(T &&value)
 		{
 			return debug_cout();
 		}
-	} cout(std::cout.rdbuf());
+	} cout(std::cout.rdbuf()), cerr(std::cerr.rdbuf());
 
 	namespace log
 	{
-		debug_cout fatal() { return debug_cout(); };
-		debug_cout error() { return debug_cout(); };
-		debug_cout warning() { return debug_cout(); };
-		debug_cout info() { return debug_cout(); };
-		debug_cout debug() { return debug_cout(); };
-		debug_cout trace() { return debug_cout(); };
+		class debug_level
+		{
+		public:
+			debug_level(std::streambuf *sbuf, int l) {}
+			template <typename T>
+			debug_cout operator<<(T &&value)
+			{
+				return debug_cout();
+			}
+		} fatal(std::cerr.rdbuf(), LOG_FATAL),
+			error(std::cerr.rdbuf(), LOG_ERROR),
+			warning(std::cerr.rdbuf(), LOG_WARNING),
+			info(std::cerr.rdbuf(), LOG_INFO),
+			debug(std::cerr.rdbuf(), LOG_DEBUG),
+			trace(std::cerr.rdbuf(), LOG_TRACE);
 	}
 #endif
 }

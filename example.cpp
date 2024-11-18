@@ -1,9 +1,21 @@
 #include "debug/debug.hpp"
 
+void wonderful()
+{
+	debug::log::debug << "Something happened";
+}
+
+void marvelous()
+{
+	debug::log::warning << "Something wrong happened";
+}
+
 int main() {
-	debug::cout << "Hello " << 0 << std::endl;
-	debug::log::fatal() << "Hello " << 1 << std::endl;
-	debug::log::info() << "Hello " << 4 << std::endl;
+	debug::cout << "Hello world!";
+	debug::log::error << "Oh damn";
+
+	wonderful();
+	marvelous();
 
 	return 0;
 }

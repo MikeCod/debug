@@ -59,25 +59,23 @@ int main() {
 __[C++ Example :](example.cpp)__
 ```cpp
 #include "debug/debug.hpp"
-#include <iostream>
 
-
-void wonderful() {
-	printf_level(LOG_DEBUG, "Something happened"); // Show in any context equal or below DEBUG (5)
+void wonderful()
+{
+	debug::log::debug << "Something happened";
 }
 
-void marvelous() {
-	printf_level(LOG_WARNING, "Something %s happened", "wrong"); // Show in any context equal or below WARNING (3)
+void marvelous()
+{
+	debug::log::warning << "Something wrong happened";
 }
 
 int main() {
-	printf_debug("Hello world !"); // Show in any debug context
-	printf_level(LOG_ERROR, "Oh damn"); // Show in any context equal or below ERROR (2)
+	debug::cout << "Hello world!";
+	debug::log::error << "Oh damn";
 
 	wonderful();
 	marvelous();
-
-	std::cout << "Done" << std::endl;
 
 	return 0;
 }
@@ -92,10 +90,14 @@ $ gcc example.c # No debug (optimized)
 
 # C++
 $ g++ example.cpp -DDEBUG # Enable debug
-$ g++ example.cpp # No debug (optimized)
+$ g++ example.cpp -O1 # No debug (optimized)
 ```
 
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.
+
+### Note C++
+
+The flag `-O1` is required to remove call and definition of these debugging functions.
 
 ## How to use `DEBUG`
 
