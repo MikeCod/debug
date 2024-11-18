@@ -78,6 +78,7 @@ namespace debug
 		{
 			std::streambuf *sbuf;
 			int level = LOG_UNDEFINED;
+			bool need_level = true;
 
 		public:
 			debug_level(std::streambuf *sbuf, int l) : sbuf(sbuf)
@@ -94,6 +95,32 @@ namespace debug
 					return debug_cout(NULL);
 
 				debug_cout rc(sbuf);
+				if (this->need_level)
+				{
+					switch (level)
+					{
+					case LOG_DEBUG:
+						rc << T_OUT(T_BOLD T_FG_WHITE) "DEBUG";
+						break;
+					case LOG_INFO:
+						rc << T_OUT(T_BOLD T_FG_CYAN) " INFO";
+						break;
+					case LOG_WARNING:
+						rc << T_OUT(T_BOLD T_FG_YELLOW) " WARN";
+						break;
+					case LOG_ERROR:
+						rc << T_OUT(T_BOLD T_FG_RED) "ERROR";
+						break;
+					case LOG_FATAL:
+						rc << T_OUT(T_REVERSE T_BOLD T_FG_RED) "FATAL";
+						break;
+					default:
+						rc << T_OUT(T_REVERSE T_FG_WHITE) "TRACE";
+						break;
+					}
+					rc << T_RESET " ";
+					this->need_level = false;
+				}
 				rc << std::forward<T>(value);
 				return rc;
 			}
