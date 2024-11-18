@@ -95,9 +95,24 @@ $ g++ example.cpp -O1 # No debug (optimized)
 
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.
 
-### Note C++
+```sh
+$ DEBUG=6 ./a.out
+        example.c    main           :16   Hello world !
+ ERROR  example.c    main           :17   Oh damn
+ DEBUG  example.c    wonderful      :6    Something happened
+ WARN   example.c    marvelous      :11   Something wrong happened
+```
+
+### Note C++ (Experimental)
 
 The flag `-O1` is required to remove call and definition of these debugging functions.
+In C++, the file/function/line isn't present in logging ;
+```sh
+Hello world!
+ERROR Oh damn
+DEBUG Something happened
+ WARN Something wrong happened
+```
 
 ## How to use `DEBUG`
 

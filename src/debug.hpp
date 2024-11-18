@@ -37,6 +37,7 @@ namespace debug
 	class debug_log
 	{
 		std::streambuf *sbuf;
+		bool need_pad = true;
 
 	public:
 		debug_log(std::streambuf *sbuf) : sbuf(sbuf)
@@ -55,6 +56,11 @@ namespace debug
 				return debug_cout(NULL);
 
 			debug_cout rc(sbuf);
+			if (this->need_pad)
+			{
+				rc << "      ";
+				this->need_pad = false;
+			}
 			rc << std::forward<T>(value);
 			return rc;
 		}
