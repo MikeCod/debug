@@ -108,7 +108,7 @@ $ DEBUG=6 ./a.out
 The flag `-O1` is required to remove call and definition of these debugging functions.
 In C++, the file/function/line isn't present in logging ;
 ```sh
-Hello world!
+      Hello world!
 ERROR Oh damn
 DEBUG Something happened
  WARN Something wrong happened
