@@ -115,7 +115,7 @@ Little residues of debugging functions remains in the executable, but everything
 
 The residues of these debugging functions is a `ret` for each one:
 ```assembly
-# Assembly
+; Assembly
 
 debug_cout_source_location:
 	ret
