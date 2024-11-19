@@ -68,17 +68,17 @@ __[C++ Example :](example.cpp)__
 
 void wonderful()
 {
-	debug::log::debug << "Something happened";
+	debug::log::debug() << "Something happened";
 }
 
 void marvelous()
 {
-	debug::log::warning << "Something wrong happened";
+	debug::log::warning() << "Something wrong happened";
 }
 
-int main() {
-	debug::cout << "Hello world!";
-	debug::log::error << "Oh damn";
+int main(void) {
+	debug::cerr() << "Hello world!";
+	debug::log::fatal() << "Oh damn";
 
 	wonderful();
 	marvelous();
