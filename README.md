@@ -42,7 +42,7 @@ __[C Example :](example.c)__
 
 void wonderful(void)
 {
-	printf_debug("Something happened"); // Show in any context equal or below DEBUG (5)
+	printf_debug("Something happened");  // Show in any context equal or below DEBUG (5)
 }
 
 void marvelous(void)
@@ -52,8 +52,8 @@ void marvelous(void)
 
 int main(void)
 {
-	dbg_printf("Hello %s !", "world");		// Show in any debug context
-	printf_fatal("Oh damn"); // Show in any context equal or below ERROR (2)
+	dbg_printf("Hello %s !", "world");   // Show in any debug context
+	printf_fatal("Oh damn");             // Show in any context equal or below ERROR (2)
 
 	wonderful();
 	marvelous();
@@ -90,12 +90,12 @@ int main(void) {
 You can build using :
 ```sh
 # C
-$ gcc example.c -DDEBUG	# Enable debug
-$ gcc example.c			# No debug (optimized)
+$ gcc example.c -DDEBUG # Enable debug
+$ gcc example.c         # No debug (optimized)
 
 # C++ (20 or higher)
-$ g++ example.cpp -std=c++20 -DDEBUG	# Enable debug
-$ g++ example.cpp -std=c++20 -O1		# No debug (optimized)
+$ g++ example.cpp -std=c++20 -DDEBUG # Enable debug
+$ g++ example.cpp -std=c++20 -O1     # No debug (optimized)
 ```
 
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.
