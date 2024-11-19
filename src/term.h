@@ -1,8 +1,3 @@
-/**
- * \brief Update terminal display
- * \author Dimitri Simon
- * \date 2024-01-17
-*/
 
 /* Legacy */
 

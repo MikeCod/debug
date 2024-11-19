@@ -16,7 +16,7 @@
  * @param format
  * @param ... Parameters for format
  */
-#define printf_debug(fmt, ...)
+#define dbg_printf(fmt, ...)
 
 /**
  * @brief Print within a context
@@ -25,6 +25,14 @@
  * @param ... Parameters for format
  */
 #define printf_level(l, fmt, ...)
+
+
+#define printf_fatal(fmt, ...)
+#define printf_error(fmt, ...)
+#define printf_warning(fmt, ...)
+#define printf_info(fmt, ...)
+#define printf_debug(fmt, ...)
+#define printf_trace(fmt, ...)
 
 #define LOG_UNDEFINED (-1)
 #define LOG_NONE 0
@@ -39,10 +47,10 @@
 
 #if (defined(DEBUG) || defined(DEBUG_LEVEL))
 #ifndef DEBUG_SPACING_FILE
-#define DEBUG_SPACING_FILE 12
+#define DEBUG_SPACING_FILE 10
 #endif // DEBUG_SPACING_FILE
 #ifndef DEBUG_SPACING_FUNCTION
-#define DEBUG_SPACING_FUNCTION 15
+#define DEBUG_SPACING_FUNCTION 10
 #endif // DEBUG_SPACING_FUNCTION
 #ifndef DEBUG_SPACING_LINE
 #define DEBUG_SPACING_LINE 4
@@ -52,7 +60,7 @@
 #define DEBUG_OUT 2
 #endif
 
-#undef printf_debug
+#undef dbg_printf
 #undef printf_level
 
 #define STRINGIFY(x) __STRINGIFY(x)
@@ -61,12 +69,12 @@
 
 #define FORMAT         \
 	T_OUT(T_FG_YELLOW) \
-	"%-" STRINGIFY(DEBUG_SPACING_FILE) "s" T_RESET " " T_OUT(T_BOLD T_FG_WHITE) "%-" STRINGIFY(DEBUG_SPACING_FUNCTION) "s" T_RESET ":" T_OUT(T_FG_CYAN) "%-" STRINGIFY(DEBUG_SPACING_LINE) "u" T_RESET " "
+	"%-" STRINGIFY(DEBUG_SPACING_FILE) "s" T_RESET " " T_OUT(T_BOLD T_FG_WHITE) "%-" STRINGIFY(DEBUG_SPACING_FUNCTION) "s" T_OUT("0;"T_FG_CYAN) "%\x20" STRINGIFY(DEBUG_SPACING_LINE) "u" T_RESET " "
 
-#define __printf_debug(format, ...) \
+#define __dbg_printf(format, ...) \
 	fprintf(DEBUG_OUT == 2 ? stderr : stdout, FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
-#define printf_debug(format, ...) \
+#define dbg_printf(format, ...) \
 	fprintf(DEBUG_OUT == 2 ? stderr : stdout, "        " FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 #define __level(level)                                                                                     \
@@ -101,7 +109,7 @@
 		if (level <= DEBUG_LEVEL)               \
 		{                                       \
 			__level(level);                     \
-			__printf_debug(str, ##__VA_ARGS__); \
+			__dbg_printf(str, ##__VA_ARGS__); \
 		}                                       \
 	}
 #else
@@ -224,7 +232,7 @@ regex_t debug_regex;
 			{                                                                           \
 			case 0:                                                                     \
 				__level(level);                                                         \
-				__printf_debug(format, ##__VA_ARGS__);                                  \
+				__dbg_printf(format, ##__VA_ARGS__);                                  \
 				break;                                                                  \
 			case REG_NOMATCH:                                                           \
 				break;                                                                  \
@@ -237,6 +245,19 @@ regex_t debug_regex;
 		}                                                                               \
 	}
 
+#undef printf_fatal
+#undef printf_error
+#undef printf_warning
+#undef printf_info
+#undef printf_debug
+#undef printf_trace
+
+#define printf_fatal(fmt, ...) printf_level(LOG_FATAL, fmt, ##__VA_ARGS__)
+#define printf_error(fmt, ...) printf_level(LOG_ERROR, fmt, ##__VA_ARGS__)
+#define printf_warning(fmt, ...) printf_level(LOG_WARNING, fmt, ##__VA_ARGS__)
+#define printf_info(fmt, ...) printf_level(LOG_INFO, fmt, ##__VA_ARGS__)
+#define printf_debug(fmt, ...) printf_level(LOG_DEBUG, fmt, ##__VA_ARGS__)
+#define printf_trace(fmt, ...) printf_level(LOG_TRACE, fmt, ##__VA_ARGS__)
 #endif // DEBUG_LEVEL
 
 #endif // (defined(DEBUG) || defined(DEBUG_LEVEL))

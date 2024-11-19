@@ -2,7 +2,11 @@
 
 ## Overview
 
-API made to simplify debugging for C and C++
+API made to simplify debugging for C and C++.
+
+### Requirements
+
+C++20 or above.
 
 ## Installation
 
@@ -81,7 +85,6 @@ int main() {
 }
 ```
 
-
 You can build using :
 ```sh
 # C
@@ -97,22 +100,29 @@ After what, if you enabled debugging, you shall be able to debug using `DEBUG` e
 
 ```sh
 $ DEBUG=6 ./a.out
-        example.c    main           :16   Hello world !
- ERROR  example.c    main           :17   Oh damn
- DEBUG  example.c    wonderful      :6    Something happened
- WARN   example.c    marvelous      :11   Something wrong happened
+        example.c  main        15 Hello world !
+ FATAL  example.c  main        16 Oh damn
+ DEBUG  example.c  wonderful    5 Something happened
+ WARN   example.c  marvelous   10 Something wrong happened
 ```
 
-### Note C++ (Experimental)
+### Note C++
 
-The flag `-O1` is required to remove call and definition of these debugging functions.
-In C++, the file/function/line isn't present in logging ;
-```sh
-      Hello world!
-ERROR Oh damn
-DEBUG Something happened
- WARN Something wrong happened
+The flag `-O1` is **required to remove the calls** of these debugging functions.
+Little residues of debugging functions remains in the executable, but everything else (strings) doesn't.
+
+The residues of these debugging functions is a `ret` for each one:
+```assembly
+# Assembly
+
+debug_cout_source_location:
+	ret
+debug_cerr_source_location:
+	ret
+...
 ```
+
+At the moment, only debug level is supported in C++. From 0 to 6.
 
 ## How to use `DEBUG`
 
