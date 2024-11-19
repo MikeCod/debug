@@ -3,7 +3,7 @@ src := ./src
 env := $(shell sed -E 's/^(.+)/\-D\1/g' .env)
 
 
-all: build-c build-c++
+all: build-c
 
 i: install
 install:

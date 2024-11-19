@@ -63,8 +63,6 @@
 #undef dbg_printf
 #undef printf_level
 
-#define STRINGIFY(x) __STRINGIFY(x)
-#define __STRINGIFY(x) #x
 #define __line__ STRINGIFY(__LINE__)
 
 #define FORMAT         \

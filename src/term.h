@@ -1,6 +1,10 @@
 
 /* Legacy */
 
+
+#define STRINGIFY(x) __STRINGIFY(x)
+#define __STRINGIFY(x) #x
+
 /**
  * \brief Update terminal display
  * \param x How to update (string)
@@ -9,8 +13,9 @@
 	"\033[" x "m"
 
 #define T_RESET "\033[0m"
-#define T_DEFAULT "0"
 
+/** Style */
+#define T_NORMAL "0;"
 #define T_BOLD "1;"
 #define T_DIM "2;"
 #define T_ITALIC "3;"
@@ -21,6 +26,7 @@
 #define T_STRIKE "9;"
 #define T_DOUBLE_UNDERLINE "21;"
 
+/** Foreground */
 #define T_FG_DEFAULT "39"
 #define T_FG_BLACK "30"
 #define T_FG_RED "31"
@@ -39,8 +45,7 @@
 #define T_FG_LIGHT_MAGENTA "95"
 #define T_FG_LIGHT_CYAN "96"
 
-
-
+/** Background */
 #define T_BG_DEFAULT "49"
 #define T_BG_BLACK "40"
 #define T_BG_RED "41"
@@ -62,8 +67,8 @@
 /* Extended colors (only supported by some terminal) */
 
 // 6x6x6
-#define TE_WSC(color) \
-	"5;" color // (16+(red*36)+(green*6)+blue)
+#define TE_WSC(r,g,b) \
+	"5;" STRINGIFY(16+(red*36)+(green*6)+blue)
 
 #define TE_RGB(r,g,b) \
 	"2;" #r ";" #g ";" #b
