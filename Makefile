@@ -1,10 +1,9 @@
 dst := /usr/local/include
 src := ./src
-file := example.c
 env := $(shell sed -E 's/^(.+)/\-D\1/g' .env)
 
 
-all: build
+all: build-c build-c++
 
 i: install
 install:
@@ -15,5 +14,11 @@ u: uninstall
 uninstall:
 	@sudo rm -vr ${dst}/debug/
 
-build:
-	@gcc ${file} -DDEBUG -Wall ${env}
+build-c:
+	@gcc example.c -DDEBUG -Wall ${env}
+
+build-c++:
+	@g++ example.cpp -O1 -std=c++20 -DDEBUG -Wall ${env}
+
+clean:
+	@rm a.out
