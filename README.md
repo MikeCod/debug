@@ -38,20 +38,22 @@ make u
 
 __[C Example :](example.c)__
 ```c
-#include <debug/debug.h>
+#include "debug/debug.h"
 
-
-void wonderful() {
-	printf_level(LOG_DEBUG, "Something happened"); // Show in any context equal or below DEBUG (5)
+void wonderful(void)
+{
+	printf_debug("Something happened"); // Show in any context equal or below DEBUG (5)
 }
 
-void marvelous() {
-	printf_level(LOG_WARNING, "Something %s happened", "wrong"); // Show in any context equal or below WARNING (3)
+void marvelous(void)
+{
+	printf_warning("Something %s happened", "wrong"); // Show in any context equal or below WARNING (3)
 }
 
-int main() {
-	printf_debug("Hello world !"); // Show in any debug context
-	printf_level(LOG_ERROR, "Oh damn"); // Show in any context equal or below ERROR (2)
+int main(void)
+{
+	dbg_printf("Hello %s !", "world");		// Show in any debug context
+	printf_fatal("Oh damn"); // Show in any context equal or below ERROR (2)
 
 	wonderful();
 	marvelous();
