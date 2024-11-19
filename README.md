@@ -90,12 +90,12 @@ int main(void) {
 You can build using :
 ```sh
 # C
-$ gcc example.c -DDEBUG # Enable debug
-$ gcc example.c # No debug (optimized)
+$ gcc example.c -DDEBUG	# Enable debug
+$ gcc example.c			# No debug (optimized)
 
-# C++
-$ g++ example.cpp -DDEBUG # Enable debug
-$ g++ example.cpp -O1 # No debug (optimized)
+# C++ (20 or higher)
+$ g++ example.cpp -std=c++20 -DDEBUG	# Enable debug
+$ g++ example.cpp -std=c++20 -O1		# No debug (optimized)
 ```
 
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.
