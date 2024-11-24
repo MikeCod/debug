@@ -6,9 +6,21 @@ API made to simplify debugging for C and C++.
 
 ### Requirements
 
-C++20 or above.
+| Feature | C | C++ |
+|-|-|-|
+| Version | *Any* | C++20 |
+| Debugging Compiler | GCC | *Any* |
+| Production Compiler | *Any* | *Any* |
 
-## Installation
+#### Note C++
+
+G++ optimize better than Clang++.
+You may observe using a command like ;
+```sh
+objdump -D build/example-cpp | grep -A 5 -i debug
+```
+
+## Setup
 
 ```sh
 make install
@@ -108,12 +120,12 @@ $ DEBUG=6 ./a.out
  WARN   example.c  marvelous   10 Something wrong happened
 ```
 
-### Note C++
+### C++ Limitations
 
-The flag `-O1` (at least, you may use above) is **required to remove the calls** of these debugging functions.
+The flag `-Os` (or similar) is **required to remove the calls** of these debugging functions.
 Little residues of debugging functions remains in the executable, but everything else (strings) doesn't.
 
-The residues of these debugging functions is a `ret` for each one:
+The residues of these debugging functions is a `ret` for each one (using `-O1` with GCC, or `-Os` with Clang):
 ```assembly
 ; Assembly
 
