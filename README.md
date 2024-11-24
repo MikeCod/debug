@@ -110,7 +110,7 @@ $ DEBUG=6 ./a.out
 
 ### Note C++
 
-The flag `-O1` is **required to remove the calls** of these debugging functions.
+The flag `-O1` (at least, you may use above) is **required to remove the calls** of these debugging functions.
 Little residues of debugging functions remains in the executable, but everything else (strings) doesn't.
 
 The residues of these debugging functions is a `ret` for each one:

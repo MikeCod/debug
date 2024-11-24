@@ -1,3 +1,4 @@
+// gcc example.c
 #include "debug/debug.h"
 
 void wonderful(void)

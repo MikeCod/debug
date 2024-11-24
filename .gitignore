@@ -1,2 +1,5 @@
 .vscode
-*.out
+
+build
+a.out
+vuln.c

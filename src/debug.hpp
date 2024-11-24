@@ -11,6 +11,13 @@
 
 #include "term.h"
 
+#if (__cplusplus < 202002L)
+#error Requires C++20 (-std=c++20) or higher
+#endif
+
+#pragma GCC diagnostic warning "-Os"	// No effect
+#pragma GCC diagnostic warning "-Wall"
+
 #define LOG_UNDEFINED (-1)
 #define LOG_NONE 0
 #define LOG_FATAL 1
@@ -220,6 +227,8 @@ namespace debug
 		}
 	}
 #else
+
+
 	class debug_cout
 	{
 	public:

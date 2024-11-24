@@ -1,3 +1,4 @@
+// g++ example.cpp -std=c++20 -O1
 #include "debug/debug.hpp"
 
 void wonderful()
