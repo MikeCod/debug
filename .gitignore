@@ -2,4 +2,6 @@
 
 build
 a.out
+
+README-*.md
 vuln.c

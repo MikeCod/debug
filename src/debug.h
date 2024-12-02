@@ -69,7 +69,7 @@
 
 #define FORMAT         \
 	T_OUT(T_FG_YELLOW) \
-	"%-" STRINGIFY(DEBUG_SPACING_FILE) "s" T_RESET " " T_OUT(T_BOLD T_FG_WHITE) "%-" STRINGIFY(DEBUG_SPACING_FUNCTION) "s" T_OUT("0;" T_FG_CYAN) "%\x20" STRINGIFY(DEBUG_SPACING_LINE) "u" T_RESET " "
+	"%-" STRINGIFY(DEBUG_SPACING_FILE) "s" T_RESET " " T_OUT(T_BOLD T_FG_WHITE) "%-" STRINGIFY(DEBUG_SPACING_FUNCTION) "s" T_OUT("0;" T_FG_CYAN) "%+" STRINGIFY(DEBUG_SPACING_LINE) "u" T_RESET " "
 
 #define __dbg_printf(format, ...) \
 	fprintf(DEBUG_OUT == 2 ? stderr : stdout, FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
@@ -77,10 +77,10 @@
 #define dbg_printf(format, ...) \
 	fprintf(DEBUG_OUT == 2 ? stderr : stdout, "        " FORMAT format "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
-#define printf_custom(file, func, line, level, format, ...)                                                        \
-	{                                                                                                              \
-		__level(level);                                                                                            \
-		fprintf(DEBUG_OUT == 2 ? stderr : stdout, "        " FORMAT format "\n", file, func, line, ##__VA_ARGS__); \
+#define printf_custom(file, func, line, level, format, ...)                                             \
+	{                                                                                                   \
+		__level(level);                                                                                 \
+		fprintf(DEBUG_OUT == 2 ? stderr : stdout, FORMAT format "\n", file, func, line, ##__VA_ARGS__); \
 	}
 
 #define __level(level)                                                                                     \
@@ -243,10 +243,12 @@ regex_t debug_regex;
 			case REG_NOMATCH:                                                           \
 				break;                                                                  \
 			default:                                                                    \
+			{                                                                           \
 				char msg[800];                                                          \
 				regerror(ret, &debug_regex, msg, sizeof(msg));                          \
 				fprintf(stderr, "Regex match failed: %s\n", msg);                       \
 				exit(1);                                                                \
+			}                                                                           \
 			}                                                                           \
 		}                                                                               \
 	}

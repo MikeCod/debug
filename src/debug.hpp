@@ -227,8 +227,6 @@ namespace debug
 		}
 	}
 #else
-
-
 	class debug_cout
 	{
 	public:
