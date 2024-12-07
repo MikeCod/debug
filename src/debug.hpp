@@ -13,10 +13,12 @@
 
 #if (__cplusplus < 202002L)
 #error Requires C++20 (-std=c++20) or higher
-#endif
+#else
 
-#pragma GCC diagnostic warning "-Os"	// No effect
 #pragma GCC diagnostic warning "-Wall"
+#pragma GCC diagnostic warning "-Wextra"
+#pragma GCC diagnostic warning "-Wformat"
+#pragma GCC diagnostic warning "-Wformat-security"
 
 #define LOG_UNDEFINED (-1)
 #define LOG_NONE 0
@@ -227,6 +229,11 @@ namespace debug
 		}
 	}
 #else
+#pragma GCC optimize ("O1")
+#pragma clang optimize on
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+
 	class debug_cout
 	{
 	public:
@@ -284,11 +291,9 @@ namespace debug
 		{
 			return debug_cout();
 		}
-		debug_cout cout(const std::source_location &location = std::source_location::current())
-		{
-			return debug_cout();
-		}
 	}
-
+#pragma GCC pop_options
 #endif
 }
+
+#endif
