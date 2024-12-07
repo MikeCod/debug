@@ -29,7 +29,6 @@
 #pragma GCC diagnostic warning "-Wformat"
 #pragma GCC diagnostic warning "-Wformat-security"
 
-
 #ifndef DEBUG_SPACING_FILE
 #define DEBUG_SPACING_FILE 10
 #endif // DEBUG_SPACING_FILE
