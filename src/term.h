@@ -15,8 +15,8 @@
 
 /* Legacy */
 
-#define STRINGIFY(x) __STRINGIFY(x)
 #define __STRINGIFY(x) #x
+#define STRINGIFY(x) __STRINGIFY(x)
 
 /**
  * \brief Update terminal display
@@ -34,6 +34,7 @@
 #define T_ITALIC "3;"
 #define T_UNDERLINE "4;"
 #define T_BLINK "5;"
+#define T_FAST_BLINK "6;"
 #define T_REVERSE "7;"
 #define T_HIDE "8;"
 #define T_STRIKE "9;"
@@ -77,15 +78,18 @@
 #define T_BG_LIGHT_MAGENTA "105"
 #define T_BG_LIGHT_CYAN "106"
 
-/* Extended colors (only supported by some terminal) */
 
-// 6x6x6
-#define TE_WSC(r,g,b) \
-	"5;" STRINGIFY(16+(red*36)+(green*6)+blue)
+/* Extended 24-bits colors (RGB) (only supported by some terminal) */
 
-#define TE_RGB(r,g,b) \
-	"2;" #r ";" #g ";" #b
+#define TE_FG "38"
+#define TE_BG "48"
 
-#define TE_FG "38;"
-#define TE_BG "48;"
+#define TE_RGB(t,r,g,b) \
+	"\e[" #t ";2;" #r ";" #g ";" #b "m"
+
+#define TE_RGB_FG(r,g,b) \
+	"\e[" TE_FG ";2;" #r ";" #g ";" #b "m"
+
+#define TE_RGB_BG(r,g,b) \
+	"\e[" TE_BG ";2;" #r ";" #g ";" #b "m"
 
