@@ -1,6 +1,19 @@
+/*******************************************************************************
+ * @file		term.h
+ * @brief		
+ * @date		Mo Nov 2024
+ * @author		Dimitri Simon
+ * 
+ * PROJECT:		src
+ * 
+ * MODIFIED:	Sat Dec 07 2024
+ * BY:			Dimitri Simon
+ * 
+ * Copyright (c) 2024 Dimitri Simon
+ * 
+ *******************************************************************************/
 
 /* Legacy */
-
 
 #define STRINGIFY(x) __STRINGIFY(x)
 #define __STRINGIFY(x) #x
