@@ -21,11 +21,11 @@ build-c:
 
 build-c++:
 	@mkdir -p ${build}
-	@g++ example.cpp -o ${build}/example-cpp -Os -std=c++20 -DDEBUG ${env}
+	@g++ example.cpp -o ${build}/example-cpp -std=c++20 -DDEBUG ${env}
 
 build-c++-asm:
 	@mkdir -p ${build}
-	@g++ example.cpp -Os -std=c++20 -fverbose-asm -masm=intel -S -o ${build}/example-cpp.asm
+	@g++ example.cpp -std=c++20 -fverbose-asm -masm=intel -S -o ${build}/example-cpp.asm
 
 clean:
 	@rm -rf build
