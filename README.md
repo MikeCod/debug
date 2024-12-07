@@ -9,7 +9,7 @@ API made to simplify debugging for C and C++.
 | Feature | C | C++ |
 |-|-|-|
 | Version | *Any* | C++20 |
-| Debugging Compiler | GCC | *Any* |
+| Debugging Compiler | GCC | *Any* (G++ recommended) |
 | Production Compiler | *Any* | *Any* |
 
 #### Note C++
@@ -107,7 +107,7 @@ $ gcc example.c         # No debug (optimized)
 
 # C++ (20 or higher)
 $ g++ example.cpp -std=c++20 -DDEBUG # Enable debug
-$ g++ example.cpp -std=c++20 -O1     # No debug (optimized)
+$ g++ example.cpp -std=c++20         # No debug (optimized)
 ```
 
 After what, if you enabled debugging, you shall be able to debug using `DEBUG` environment variable.
@@ -122,7 +122,7 @@ $ DEBUG=6 ./a.out
 
 ### C++ Limitations
 
-The flag `-Os` (or similar) is **required to remove the calls** of these debugging functions.
+The flag `-Os` (or similar) is **required to remove the calls** of these debugging functions (`-O1` applied by default with G++).
 Little residues of debugging functions remains in the executable, but everything else (strings) doesn't.
 
 The residues of these debugging functions is a `ret` for each one (using `-O1` with GCC, or `-Os` with Clang):
