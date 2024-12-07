@@ -45,8 +45,13 @@
 #define LOG_TRACE 6
 
 #define C(x) (x + '0')
+#define LF "\n            "
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
 
 #if (defined(DEBUG) || defined(DEBUG_LEVEL))
+
 #ifndef DEBUG_SPACING_FILE
 #define DEBUG_SPACING_FILE 10
 #endif // DEBUG_SPACING_FILE
@@ -170,7 +175,10 @@ char *str_replace(char *orig, const char *rep, const char *with)
 		orig += len_front + len_rep; // move to next "end of rep"
 	}
 	strcpy(tmp, orig);
-	return result;
+	strcpy(orig, result);
+	free(result);
+
+	return orig;
 }
 
 #define BUF_SZ 8000
@@ -199,20 +207,21 @@ int make_regex(char *regex, const char *buf)
 	return sprintf(regex, "[" STRINGIFY(LOG_FATAL) "-%c]\\:%s", level, search);
 }
 
-char *debug_var = NULL;
-regex_t debug_regex;
+char debug_var[0xffff];
 
 #define printf_level(level, format, ...)                                                \
 	{                                                                                   \
-		debug_var = getenv("DEBUG");                                                    \
-		if (debug_var != NULL && strlen(debug_var) != 0)                                \
+		char *__debug_var = getenv("DEBUG");                                            \
+		if (__debug_var != NULL && strlen(__debug_var) != 0)                            \
 		{                                                                               \
+			regex_t debug_regex;                                                        \
+			strcpy(debug_var, __debug_var);                                             \
 			if (strcmp(debug_var, "*") == 0)                                            \
 				debug_var[0] = '6';                                                     \
 			else                                                                        \
 			{                                                                           \
-				debug_var = str_replace(debug_var, "*:", STRINGIFY(LOG_TRACE) ":");     \
-				debug_var = str_replace(debug_var, "*", "(.*)");                        \
+				str_replace(debug_var, "*:", STRINGIFY(LOG_TRACE) ":");                 \
+				str_replace(debug_var, "*", "(.*)");                                    \
 			}                                                                           \
 			char strregex[8000] = "^(";                                                 \
 			char *p = strregex + 2;                                                     \
@@ -250,6 +259,7 @@ regex_t debug_regex;
 				exit(1);                                                                \
 			}                                                                           \
 			}                                                                           \
+			regfree(&debug_regex);                                                      \
 		}                                                                               \
 	}
 
