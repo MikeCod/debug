@@ -6,7 +6,7 @@
  * 
  * PROJECT:		src
  * 
- * MODIFIED:	Sat Dec 07 2024
+ * MODIFIED:	Sun Dec 08 2024
  * BY:			Dimitri Simon
  * 
  * Copyright (c) 2024 Dimitri Simon
@@ -79,10 +79,25 @@
 #define T_BG_LIGHT_CYAN "106"
 
 
-/* Extended 24-bits colors (RGB) (only supported by some terminal) */
+/* Extended (only supported by some terminal) */
 
 #define TE_FG "38"
 #define TE_BG "48"
+
+
+/* 8-bits colors (256-colour) 6x6x6 */
+
+#define TE_256(t,color) \
+	"\e[" #t ";5;" #color "m"
+
+#define TE_256_FG(color) \
+	"\e[" TE_FG ";5;" #color "m"
+
+#define TE_256_BG(color) \
+	"\e[" TE_BG ";5;" #color "m"
+
+
+/* 24-bits colors (RGB) */
 
 #define TE_RGB(t,r,g,b) \
 	"\e[" #t ";2;" #r ";" #g ";" #b "m"
