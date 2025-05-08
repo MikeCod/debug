@@ -8,7 +8,7 @@ void wonderful()
 
 void marvelous()
 {
-	debug::log::warning() << "Something wrong happened";
+	debug::log::warning() << "Something wrong happened (errno " << 1 << ")";
 }
 
 int main(void) {

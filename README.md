@@ -9,8 +9,8 @@ API made to simplify debugging for C and C++.
 | Feature | C | C++ |
 |-|-|-|
 | Version | *Any* | C++20 |
-| Debugging Compiler | GCC | *Any* (G++ recommended) |
-| Production Compiler | *Any* | *Any* |
+| Debugging Compiler | GCC | *Any* |
+| Production Compiler | *Any* | *Any* (G++ recommended) |
 
 #### Note C++
 
@@ -85,7 +85,7 @@ void wonderful()
 
 void marvelous()
 {
-	debug::log::warning() << "Something wrong happened";
+	debug::log::warning() << "Something wrong happened (errno " << 1 << ")";
 }
 
 int main(void) {
